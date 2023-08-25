@@ -7,6 +7,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.forum.clothing.mapper.AppUserMapper;
 import com.forum.clothing.model.AppUser;
 import com.forum.clothing.util.result.PageDTO;
+import com.forum.clothing.util.result.Result;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -31,5 +32,9 @@ public class UserService {
                 logIPage.getSize(),
                 logIPage.getRecords());
         return result;
+    }
+
+    public Result<AppUser> getUserByWechatCode(String code) {
+        return null;
     }
 }
