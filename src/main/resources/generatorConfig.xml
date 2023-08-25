@@ -44,12 +44,17 @@
         <!-- 指定数据库表 -->
         <!--table是指定每个表的生成策略-->
 
-        <table tableName="app_user" domainObjectName="AppUser" enableCountByExample="false"
-               enableUpdateByExample="false"
-               enableDeleteByExample="false"
-               enableSelectByExample="false"
-               selectByExampleQueryId="false"/>
-        <table tableName="quality" domainObjectName="Quality" enableCountByExample="false"
+<!--        <table tableName="app_user" domainObjectName="AppUser" enableCountByExample="false"-->
+<!--               enableUpdateByExample="false"-->
+<!--               enableDeleteByExample="false"-->
+<!--               enableSelectByExample="false"-->
+<!--               selectByExampleQueryId="false"/>-->
+<!--        <table tableName="quality" domainObjectName="Quality" enableCountByExample="false"-->
+<!--               enableUpdateByExample="false"-->
+<!--               enableDeleteByExample="false"-->
+<!--               enableSelectByExample="false"-->
+<!--               selectByExampleQueryId="false"/>-->
+        <table tableName="quality_collect" domainObjectName="QualityCollect" enableCountByExample="false"
                enableUpdateByExample="false"
                enableDeleteByExample="false"
                enableSelectByExample="false"
