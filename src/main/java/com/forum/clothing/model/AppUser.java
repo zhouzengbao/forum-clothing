@@ -38,7 +38,7 @@ public class AppUser {
     /**
      * 用户类型：1供货商2经销商
      */
-    private Boolean userType;
+    private Byte userType;
 
     /**
      * 身份证号

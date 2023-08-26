@@ -49,12 +49,12 @@ public class Quality {
     /**
      * 供需关系 1 供货 2需求
      */
-    private Boolean qualityType;
+    private Byte qualityType;
 
     /**
      * '-1 删除 0 创建 1上架
      */
-    private Boolean status;
+    private Byte status;
 
     /**
      * 浏览量
