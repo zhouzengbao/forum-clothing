@@ -6,4 +6,6 @@ import org.apache.ibatis.annotations.Mapper;
 
 @Mapper
 public interface AppUserMapper extends BaseMapper<AppUser> {
+    AppUser selectByOpenId(String openId);
+
 }
