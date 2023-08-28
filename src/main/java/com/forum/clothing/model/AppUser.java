@@ -8,6 +8,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 
 @Data
@@ -25,6 +26,8 @@ public class AppUser {
      */
     private String nickName;
 
+    private String userName;
+
     /**
      * 手机号
      */
@@ -38,7 +41,7 @@ public class AppUser {
     /**
      * 用户类型：1供货商2经销商
      */
-    private Byte userType;
+    private Integer userType;
 
     /**
      * 身份证号
@@ -48,7 +51,7 @@ public class AppUser {
     /**
      * 0未认证 1已认证
      */
-    private Boolean auth;
+    private Integer auth;
 
     /**
      * 认证金额
@@ -58,7 +61,7 @@ public class AppUser {
     /**
      * 邀请人ID
      */
-    private Integer inviteUserId;
+    private String inviteUserId;
 
     /**
      * openId
@@ -68,9 +71,11 @@ public class AppUser {
     /**
      *
      */
-    private Date createTime;
+    private Long expireTime;
 
-    private Date updateTime;
+    private Long createTime;
+
+    private Long updateTime;
 
     /**
      * 头像

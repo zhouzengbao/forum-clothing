@@ -24,4 +24,7 @@
   <sql id="Blob_Column_List">
     avatar_url, site_pic
   </sql>
+  <select id="selectByOpenId" resultMap="BaseResultMap">
+    select * from app_user where open_id = #{openId} limit 1
+  </select>
 </mapper>
