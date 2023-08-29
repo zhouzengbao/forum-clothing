@@ -21,38 +21,38 @@ import java.nio.file.Paths;
 @Component
 public class OSSUtil {
 	private static OSS $client;
-
-	@SuppressWarnings("static-access")
-	@PostConstruct
-	public void init() throws ClientException {
-		// 创建OSSClient实例。
-		EnvironmentVariableCredentialsProvider credentialsProvider = CredentialsProviderFactory.newEnvironmentVariableCredentialsProvider();
-		this.$client= new OSSClientBuilder().build(SystemConfig.endpoint, credentialsProvider);
-	}
-
-	public static void uploadImgByBytes(byte[] bytes, String targarPath) {
-		$client.putObject(SystemConfig.bucketName, targarPath, new ByteArrayInputStream(bytes));
-	}
-
-	public static void uploadByStream(InputStream inputStream, String targetPath) throws Exception {
-		$client.putObject(SystemConfig.bucketName, targetPath, inputStream);
-		inputStream.close();
-	}
-
-	public static void downloadFile(String filePath, String targetPath) throws Exception {
-		$client.getObject(new GetObjectRequest(SystemConfig.bucketName, filePath), new File(targetPath));
-	}
-
-	public static void uploadNetFile(String url, String targetPath) throws Exception {
-		InputStream inputStream = new URL(url).openStream();
-		$client.putObject(SystemConfig.bucketName, targetPath, inputStream);
-		inputStream.close();
-	}
-
-	public static void uploadLocalFile(String filePath, String targetPath) throws Exception {
-		InputStream inputStream = Files.newInputStream(Paths.get(filePath));
-		$client.putObject(SystemConfig.bucketName, targetPath, inputStream);
-		inputStream.close();
-	}
+//
+//	@SuppressWarnings("static-access")
+//	@PostConstruct
+//	public void init() throws ClientException {
+//		// 创建OSSClient实例。
+//		EnvironmentVariableCredentialsProvider credentialsProvider = CredentialsProviderFactory.newEnvironmentVariableCredentialsProvider();
+//		this.$client= new OSSClientBuilder().build(SystemConfig.endpoint, credentialsProvider);
+//	}
+//
+//	public static void uploadImgByBytes(byte[] bytes, String targarPath) {
+//		$client.putObject(SystemConfig.bucketName, targarPath, new ByteArrayInputStream(bytes));
+//	}
+//
+//	public static void uploadByStream(InputStream inputStream, String targetPath) throws Exception {
+//		$client.putObject(SystemConfig.bucketName, targetPath, inputStream);
+//		inputStream.close();
+//	}
+//
+//	public static void downloadFile(String filePath, String targetPath) throws Exception {
+//		$client.getObject(new GetObjectRequest(SystemConfig.bucketName, filePath), new File(targetPath));
+//	}
+//
+//	public static void uploadNetFile(String url, String targetPath) throws Exception {
+//		InputStream inputStream = new URL(url).openStream();
+//		$client.putObject(SystemConfig.bucketName, targetPath, inputStream);
+//		inputStream.close();
+//	}
+//
+//	public static void uploadLocalFile(String filePath, String targetPath) throws Exception {
+//		InputStream inputStream = Files.newInputStream(Paths.get(filePath));
+//		$client.putObject(SystemConfig.bucketName, targetPath, inputStream);
+//		inputStream.close();
+//	}
 }
 
