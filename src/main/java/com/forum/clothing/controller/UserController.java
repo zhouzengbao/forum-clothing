@@ -44,7 +44,7 @@ public class UserController {
      * app 我的
      */
     @ApiOperation(value = "小程序 我的")
-    @PostMapping("info")
+    @GetMapping("info")
     public Result<AppUser> getUserInfo(String openId){
         return userService.getUserInfo(openId);
     }
