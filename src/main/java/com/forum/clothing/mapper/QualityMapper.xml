@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.forum.clothing.mapper.QualityMapper">
+  <resultMap id="BaseResultMap" type="com.forum.clothing.model.Quality">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="app_user_id" jdbcType="INTEGER" property="appUserId" />
+    <result column="type" jdbcType="VARCHAR" property="type" />
+    <result column="demand" jdbcType="DECIMAL" property="demand" />
+    <result column="quality_per" jdbcType="DECIMAL" property="qualityPer" />
+    <result column="address" jdbcType="VARCHAR" property="address" />
+    <result column="quality_type" jdbcType="BIT" property="qualityType" />
+    <result column="status" jdbcType="BIT" property="status" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, type, demand, quality_per, address, quality_type, status, create_time, update_time
+  </sql>
+</mapper>
