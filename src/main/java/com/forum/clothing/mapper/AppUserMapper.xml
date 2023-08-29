@@ -12,8 +12,9 @@
     <result column="auth_amount" jdbcType="BIGINT" property="authAmount" />
     <result column="invite_user_id" jdbcType="INTEGER" property="inviteUserId" />
     <result column="open_id" jdbcType="VARCHAR" property="openId" />
-    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
-    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" typeHandler="com.forum.clothing.config.Timestamp2LongHandler"/>
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" typeHandler="com.forum.clothing.config.Timestamp2LongHandler"/>
+    <result column="expire_time" jdbcType="TIMESTAMP" property="expireTime" typeHandler="com.forum.clothing.config.Timestamp2LongHandler"/>
     <result column="avatar_url" jdbcType="LONGVARCHAR" property="avatarUrl" />
     <result column="site_pic" jdbcType="LONGVARCHAR" property="sitePic" />
   </resultMap>
