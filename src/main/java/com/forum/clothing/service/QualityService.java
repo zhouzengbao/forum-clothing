@@ -41,13 +41,13 @@ public class QualityService {
         log.info("save quality,request param:{}", qualityPublishDto);
         Integer appUserId = qualityPublishDto.getAppUserId();
         AppUser appUser = appUserMapper.selectById(appUserId);
-        if (appUser == null || !appUser.getAuth()) {
+        if (appUser == null || appUser.getAuth() == 0) {
             throw new IllegalArgumentException("用户不存在或未审核");
         }
 
         Quality quality = new Quality();
         BeanUtils.copyProperties(qualityPublishDto, quality);
-        quality.setQualityType(appUser.getUserType());
+        quality.setQualityType(appUser.getUserType().byteValue());
         quality.setStatus((byte) 0);
         int result;
         if (quality.getId() != null && quality.getId() != 0) {
@@ -119,12 +119,15 @@ public class QualityService {
     /**
      * 列表
      */
-    public PageDTO<QualityDetailDto> list(Integer current, Integer size, String type) {
+    public PageDTO<QualityDetailDto> list(Integer current, Integer size, String type, Byte qualityType) {
 
         Page<Quality> page = new Page<>(current, size);
         LambdaQueryWrapper<Quality> lambdaQuery = Wrappers.lambdaQuery(Quality.class);
         if (StringUtils.isNotBlank(type)) {
             lambdaQuery.eq(Quality::getType, type);
+        }
+        if(qualityType != null){
+            lambdaQuery.eq(Quality::getQualityType, qualityType);
         }
 
         Page<Quality> qualityPage = qualityMapper.selectPage(page, lambdaQuery);
