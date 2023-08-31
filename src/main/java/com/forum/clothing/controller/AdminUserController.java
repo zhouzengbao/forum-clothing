@@ -1,6 +1,5 @@
 package com.forum.clothing.controller;
 
-import com.forum.clothing.model.AppUser;
 import com.forum.clothing.service.UserService;
 import com.forum.clothing.util.result.PageDTO;
 import com.forum.clothing.util.result.Result;

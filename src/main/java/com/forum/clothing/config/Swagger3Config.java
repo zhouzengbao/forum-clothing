@@ -2,7 +2,6 @@ package com.forum.clothing.config;
 
 import io.swagger.annotations.ApiOperation;
 import org.springframework.boot.SpringBootConfiguration;
-import org.springframework.context.annotation.Bean;
 import springfox.documentation.builders.ApiInfoBuilder;
 import springfox.documentation.builders.PathSelectors;
 import springfox.documentation.builders.RequestHandlerSelectors;

@@ -2,7 +2,6 @@ package com.forum.clothing.util;
 
 import com.forum.clothing.dto.WeChatDto;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.stereotype.Service;
 
 import java.util.Optional;
 
