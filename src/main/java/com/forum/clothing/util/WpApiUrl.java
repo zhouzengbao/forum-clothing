@@ -194,7 +194,7 @@ public class WpApiUrl {
 		 * "errmsg":"xxxxx"
 		 * }
 		 */
-		LOGIN("/sns/jscode2session?appid={1}&secret={1}&js_code={2}&grant_type=authorization_code"),
+		LOGIN("/sns/jscode2session?appid={0}&secret={1}&js_code={2}&grant_type=authorization_code"),
 		
 		
 		/**
