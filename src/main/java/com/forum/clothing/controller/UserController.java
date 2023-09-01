@@ -27,8 +27,17 @@ public class UserController {
      */
     @ApiOperation(value = "使用code换取用户信息")
     @GetMapping("getUserByWechatCode")
-    public Result<AppUser> getUserByWechatCode(String code){
-        return userService.getUserByWechatCode(code);
+    public Result<AppUser> getUserByWechatCode(String code, String iv, String encryptedData) throws Exception {
+        return userService.getUserByWechatCode(code, encryptedData, iv);
+    }
+
+    /**
+     * code 换取openId 并注册
+     */
+    @ApiOperation(value = "使用code换取用户手机号")
+    @GetMapping("getUserPhoneByWechatCode")
+    public Result<String> getUserPhoneByWechatCode(String code){
+        return userService.getUserPhoneByWechatCode(code);
     }
 
     /**
