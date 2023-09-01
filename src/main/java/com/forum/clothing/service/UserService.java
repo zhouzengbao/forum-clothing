@@ -1,15 +1,18 @@
 package com.forum.clothing.service;
 
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.forum.clothing.config.SystemConfig;
 import com.forum.clothing.dto.InItUserInfoDto;
+import com.forum.clothing.dto.WechatLoginDto;
 import com.forum.clothing.mapper.AppUserMapper;
 import com.forum.clothing.model.AppUser;
-import com.forum.clothing.util.OpenIdUtil;
+import com.forum.clothing.util.AesCbcUtil;
+import com.forum.clothing.util.WeChatUtil;
 import com.forum.clothing.util.result.PageDTO;
 import com.forum.clothing.util.result.Result;
 import com.forum.clothing.util.result.Results;
@@ -19,7 +22,6 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Objects;
 
@@ -30,14 +32,21 @@ public class UserService {
     @Resource
     private AppUserMapper appUserMapper;
 
-    public Result<AppUser> getUserByWechatCode(String code) {
+    public Result<AppUser> getUserByWechatCode(String code, String encryptedData, String iv) throws Exception {
 
-        String openId = OpenIdUtil.getOpenId(code, SystemConfig.appId, SystemConfig.secret);
-        if (Objects.isNull(openId)){
+        WechatLoginDto login = WeChatUtil.login(code, SystemConfig.appId, SystemConfig.secret);
+        if (Objects.isNull(login)){
             return Results.failure("授权失败!");
         }
-        AppUser appUser = appUserMapper.selectByOpenId(openId);
+        String openid = login.getOpenid();
+        String sessionKey = login.getSession_key();
+
+        AppUser appUser = appUserMapper.selectByOpenId(openid);
         if (Objects.isNull(appUser)){
+
+            String userInfoBody = AesCbcUtil.decrypt(encryptedData, sessionKey, iv, "UTF-8");
+            JSONObject jsonObject = JSON.parseObject(userInfoBody);
+
             appUser = AppUser.builder()
                     .inviteUserId(StringUtils.EMPTY)
                     .idNum(StringUtils.EMPTY)
@@ -45,12 +54,13 @@ public class UserService {
                     .userType(0)
                     .authAmount(0L)
                     .userName(StringUtils.EMPTY)
-                    .openId(openId)
+                    .openId(openid)
+                    .sessionKey(sessionKey)
                     .auth(0)
-                    .nickName(StringUtils.EMPTY)
+                    .nickName(jsonObject.getString("nickName"))
                     .expireTime(0L)
                     .sitePic(StringUtils.EMPTY)
-                    .avatarUrl(StringUtils.EMPTY)
+                    .avatarUrl(jsonObject.getString("avatarUrl"))
                     .telephone(StringUtils.EMPTY)
                     .createTime(System.currentTimeMillis())
                     .updateTime(System.currentTimeMillis())
@@ -144,5 +154,9 @@ public class UserService {
         appUserMapper.updateById(appUser);
 
         return Results.success();
+    }
+
+    public Result<String> getUserPhoneByWechatCode(String code) {
+        return Results.success(WeChatUtil.getPhone(code));
     }
 }

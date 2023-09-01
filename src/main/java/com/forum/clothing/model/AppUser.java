@@ -80,6 +80,12 @@ public class AppUser {
     private String openId;
 
     /**
+     * sessionKey
+     */
+    @ApiModelProperty(value = "sessionKey")
+    private String sessionKey;
+
+    /**
      *
      */
     @ApiModelProperty(value = "审核过期时间")

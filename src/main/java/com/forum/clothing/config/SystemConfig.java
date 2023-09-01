@@ -14,6 +14,7 @@ public class SystemConfig {
      */
     public static String appId;
     public static String secret;
+    public static String accessToken;
 
     /**
      * 发短信 配置
