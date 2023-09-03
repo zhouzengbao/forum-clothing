@@ -1,5 +1,7 @@
 package com.forum.clothing.enums;
-
+/**
+ * @author zb
+ */
 public enum WechatDomain {
 
 	/**

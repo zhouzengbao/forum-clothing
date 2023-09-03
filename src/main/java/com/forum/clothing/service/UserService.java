@@ -28,13 +28,17 @@ import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
-
+/**
+ * @author zb
+ */
 @Service
 @Slf4j
 public class UserService {
 
     @Resource
     private AppUserMapper appUserMapper;
+
+    private static final Integer insertIdSize = 4;
 
     public Result<AppUser> getUserByWechatCode(String code, String encryptedData, String iv) throws Exception {
 
@@ -72,12 +76,12 @@ public class UserService {
             appUserMapper.insert(appUser);
 
             StringBuilder id = new StringBuilder(String.valueOf(appUser.getId()));
-            String yyMMdd = DateTimeFormatter.ofPattern("yyMMdd").format(LocalDate.now());
-            while (id.length() < 4){
+            String yyMmDd = DateTimeFormatter.ofPattern("yyMMdd").format(LocalDate.now());
+            while (id.length() < insertIdSize){
                 id.insert(0, "0");
             }
 
-            String userCode = yyMMdd + id;
+            String userCode = yyMmDd + id;
             appUser.setUserCode(userCode);
             appUserMapper.updateById(appUser);
 
@@ -94,7 +98,7 @@ public class UserService {
             return Results.failure("用户不存在!");
         }
 
-        if (!isValidID(inItUserInfoDto.getIdNum())){
+        if (!isValidId(inItUserInfoDto.getIdNum())){
             return Results.failure("身份证无效");
         }
         appUser.setUserName(inItUserInfoDto.getUserName());
@@ -109,7 +113,7 @@ public class UserService {
         return Results.success(appUser);
     }
 
-    public static boolean isValidID(String id) {
+    public static boolean isValidId(String id) {
         //身份证号码的正则表达式
         String pattern = "^\\d{17}(\\d|x|X)$";
         if (!id.matches(pattern)) {
@@ -155,18 +159,18 @@ public class UserService {
         IPage<AppUser> iPage = new Page<>(page,pageSize);
         wrapper
                 .orderByDesc(AppUser::getId);
-        IPage<AppUser> logIPage = appUserMapper.selectPage(iPage, wrapper);
+        IPage<AppUser> myPage = appUserMapper.selectPage(iPage, wrapper);
         return new PageDTO<>(
-                logIPage.getTotal(),
-                logIPage.getPages(),
-                logIPage.getCurrent(),
-                logIPage.getSize(),
-                logIPage.getRecords());
+                myPage.getTotal(),
+                myPage.getPages(),
+                myPage.getCurrent(),
+                myPage.getSize(),
+                myPage.getRecords());
     }
 
     public Result<?> auth(Long userId, Integer auth, Long authAmount, Long expireTime) {
 
-        if (Objects.isNull(userId) || Objects.isNull(auth) || (Objects.equals(0, auth) && Objects.equals(1, auth))){
+        if (checkAuth(userId, auth)){
             return Results.failure("参数错误!");
         }
 
@@ -194,6 +198,10 @@ public class UserService {
         appUserMapper.updateById(appUser);
 
         return Results.success();
+    }
+
+    private static boolean checkAuth(Long userId, Integer auth) {
+        return Objects.isNull(userId) || Objects.isNull(auth) || (Objects.equals(0, auth) && Objects.equals(1, auth));
     }
 
     public Result<String> getUserPhoneByWechatCode(String code) {

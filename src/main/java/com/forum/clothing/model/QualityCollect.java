@@ -9,11 +9,14 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.util.Date;
+/**
+ * @author zb
+ */
 @Data
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-@TableName("quality")
+@TableName("quality_collect")
 public class QualityCollect {
 
     @TableId(value = "id", type = IdType.AUTO)

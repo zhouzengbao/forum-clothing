@@ -9,6 +9,9 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
 
+/**
+ * @author zb
+ */
 @Api(value = "公共类")
 @RestController
 @RequestMapping("v1/common")

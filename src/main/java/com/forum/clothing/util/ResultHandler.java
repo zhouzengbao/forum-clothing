@@ -6,7 +6,9 @@ import com.alibaba.fastjson.JSONObject;
 import com.forum.clothing.dto.WeChatDto;
 
 import java.util.Optional;
-
+/**
+ * @author zb
+ */
 public class ResultHandler {
 
 	private JSONObject json;

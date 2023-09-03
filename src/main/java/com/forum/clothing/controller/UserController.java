@@ -6,13 +6,17 @@ import com.forum.clothing.service.UserService;
 import com.forum.clothing.util.result.Result;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
 import javax.validation.Valid;
 
 /**
  * 用户
+ * @author zb
  */
 @Api(tags = "小程序用户")
 @RestController

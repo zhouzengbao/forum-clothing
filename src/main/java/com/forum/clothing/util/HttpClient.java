@@ -7,7 +7,9 @@ import java.io.File;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.util.Map;
-
+/**
+ * @author zb
+ */
 public class HttpClient {
 
     public static void upload(String url, File file, Callback callback) {

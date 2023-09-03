@@ -5,7 +5,9 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.util.List;
-
+/**
+ * @author zb
+ */
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -24,7 +26,7 @@ public class PageDTO<T> {
     /**
      * 当前页
      */
-    private Long current;
+    private Long num;
 
     /**
      * 获取每页显示条数

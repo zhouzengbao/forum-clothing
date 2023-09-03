@@ -1,5 +1,7 @@
 package com.forum.clothing.util.result;
-
+/**
+ * @author zb
+ */
 public class Results<T> {
 
 	public static <T> Result<T> success(T data) {

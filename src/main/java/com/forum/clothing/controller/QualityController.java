@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 /**
  * 供需
+ * @author zb
  */
 @Api("货品接口")
 @RestController
@@ -86,7 +87,7 @@ public class QualityController {
      */
     @ApiOperation("列表")
     @PostMapping("/list")
-    public Result<?> list(@RequestParam(defaultValue = "0") Integer current,
+    public Result<?> list(@RequestParam(defaultValue = "0") Integer page,
                           @RequestParam(defaultValue = "10") Integer size,
                           String type,
                           Byte qualityType,
@@ -94,10 +95,21 @@ public class QualityController {
                           String openid
     ) {
         try {
-            return Results.success(qualityService.list(current, size, type, qualityType, pageType, openid));
+            return Results.success(qualityService.list(page, size, type, qualityType, pageType, openid));
         } catch (Exception e) {
             return Results.failure(e.getMessage());
         }
+    }
+
+    /**
+     * 收藏
+     * @param id
+     * @param userId
+     * @return
+     */
+    @PostMapping("/collect")
+    public Result<?> collect(Integer id, Integer userId){
+        return qualityService.collect(id, userId);
     }
 
 }

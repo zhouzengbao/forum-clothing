@@ -11,6 +11,9 @@ import lombok.NoArgsConstructor;
 import java.math.BigDecimal;
 import java.util.Date;
 
+/**
+ * @author zb
+ */
 @Data
 @Builder
 @AllArgsConstructor
@@ -27,7 +30,7 @@ public class Quality {
     private Integer appUserId;
 
     /**
-     * 类别：夏装 冬装
+     * 类别：0 夏装 1 冬装
      */
     private String type;
 
@@ -47,7 +50,7 @@ public class Quality {
     private String address;
 
     /**
-     * 供需关系 1 供货 2需求
+     * 供需关系 0 供货 1需求
      */
     private Byte qualityType;
 

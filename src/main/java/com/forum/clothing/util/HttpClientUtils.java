@@ -31,13 +31,19 @@ import java.util.Map.Entry;
  */
 public class HttpClientUtils {
 
-    // 编码格式。发送编码格式统一用UTF-8
+    /**
+     * 编码格式。发送编码格式统一用UTF-8
+     */
     private static final String ENCODING = "UTF-8";
 
-    // 设置连接超时时间，单位毫秒。
+    /**
+     * 设置连接超时时间，单位毫秒。
+     */
     private static final int CONNECT_TIMEOUT = 6000;
 
-    // 请求获取数据的超时时间(即响应时间)，单位毫秒。
+    /**
+     * 请求获取数据的超时时间(即响应时间)，单位毫秒。
+     */
     private static final int SOCKET_TIMEOUT = 6000;
 
     /**
@@ -168,12 +174,6 @@ public class HttpClientUtils {
             RequestConfig.custom().setConnectTimeout(CONNECT_TIMEOUT).setSocketTimeout(SOCKET_TIMEOUT).build();
         httpPost.setConfig(requestConfig);
         // 设置请求头
-        /*httpPost.setHeader("Cookie", "");
-        httpPost.setHeader("Connection", "keep-alive");
-        httpPost.setHeader("Accept", "application/json");
-        httpPost.setHeader("Accept-Language", "zh-CN,zh;q=0.9");
-        httpPost.setHeader("Accept-Encoding", "gzip, deflate, br");
-        httpPost.setHeader("User-Agent", "Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/65.0.3325.181 Safari/537.36");*/
         packageHeader(headers, httpPost);
 
         // 封装请求参数
@@ -210,10 +210,7 @@ public class HttpClientUtils {
 
         // 设置header信息
         // 指定报文头【Content-type】、【User-Agent】
-        // httpPost.setHeader("Content-type", "application/x-www-form-urlencoded");
         httpPost.setHeader("Content-type", "application/json");
-//        httpPost.setHeader("User-Agent", "Mozilla/4.0 (compatible; MSIE 5.0; Windows NT; DigExt)");
-
         if (null != headers && headers.size() > 0) {
             for (Entry<String, String> entry : headers.entrySet()) {
                 httpPost.setHeader(entry.getKey(), entry.getValue());
@@ -341,7 +338,7 @@ public class HttpClientUtils {
      */
     public static HttpClientResult doDelete(String url, Map<String, String> params) throws Exception {
         if (params == null) {
-            params = new HashMap<String, String>();
+            params = new HashMap<>();
         }
 
         params.put("_method", "delete");
@@ -476,7 +473,11 @@ public class HttpClientUtils {
         }
     }
 
-    // 获取用户真是ip方法一
+    /**
+     * 获取用户真是ip方法一
+     * @param request
+     * @return
+     */
     public static String getRemoteIP(HttpServletRequest request) {
         return getIpAddr(request);
     }

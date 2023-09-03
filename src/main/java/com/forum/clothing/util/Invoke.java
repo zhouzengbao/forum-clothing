@@ -4,7 +4,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.text.MessageFormat;
-
+/**
+ * @author zb
+ */
 public class Invoke {
     static Logger logger = LoggerFactory.getLogger(Invoke.class);
 

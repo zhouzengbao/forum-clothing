@@ -4,7 +4,9 @@ import com.forum.clothing.config.SystemConfig;
 import com.forum.clothing.util.WeChatUtil;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
-
+/**
+ * @author zb
+ */
 @Component
 public class RunTask {
 

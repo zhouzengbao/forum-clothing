@@ -7,11 +7,10 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
-import java.util.List;
 
 /**
  * 用户注册信息
+ * @author zb
  */
 @ApiModel(value = "Blog", description = "用户注册传入对象")
 @Data

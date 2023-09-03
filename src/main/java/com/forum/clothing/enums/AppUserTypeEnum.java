@@ -2,19 +2,21 @@ package com.forum.clothing.enums;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
-
+/**
+ * @author zb
+ */
 @Getter
 @AllArgsConstructor
 public enum AppUserTypeEnum {
-    SUPPLIER("1", "原材料供应商"),
-    YARD("2", "分拣场"),
-    MERCHANT("3", "贸易商"),
+    SUPPLIER("0", "原材料供应商"),
+    YARD("1", "分拣场"),
+    MERCHANT("2", "贸易商"),
     ;
     private final String userType;
     private final String userTypeStr;
@@ -25,5 +27,14 @@ public enum AppUserTypeEnum {
             objectObjectHashMap.put(v.getUserType(), v.getUserTypeStr());
             return objectObjectHashMap;
         }).collect(Collectors.toList());
+    }
+
+    public static String getUserTypeStr(Integer userType) {
+        for (AppUserTypeEnum value : AppUserTypeEnum.values()) {
+            if (Objects.equals(String.valueOf(userType), value.getUserType())){
+                return value.getUserTypeStr();
+            }
+        }
+        return null;
     }
 }

@@ -1,11 +1,11 @@
 package com.forum.clothing.service;
 
 import com.forum.clothing.enums.AppUserTypeEnum;
+import com.forum.clothing.enums.QualityQualityTypeEnum;
 import com.forum.clothing.enums.QualityTypeEnum;
 import com.forum.clothing.util.result.Result;
 import com.forum.clothing.util.result.Results;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.ibatis.annotations.Mapper;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -17,6 +17,9 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.UUID;
 
+/**
+ * @author zb
+ */
 @Service
 public class CommonService {
 
@@ -40,7 +43,10 @@ public class CommonService {
         try {
             File local = new File(baseFilePath + fileName + fileType);
             if (!local.getParentFile().exists()) {
-                local.getParentFile().mkdirs();
+                boolean mkdirs = local.getParentFile().mkdirs();
+                if (!mkdirs){
+                    throw new RuntimeException("上传失败!");
+                }
             }
             file.transferTo(local);
         } catch (IOException e) {
@@ -51,9 +57,10 @@ public class CommonService {
 
 
     public Result<?> config() {
-        Map<String, Object> config = new HashMap<>();
+        Map<String, Object> config = new HashMap<>(3);
         config.put("userType", AppUserTypeEnum.getAllType());
         config.put("qualityType", QualityTypeEnum.getAllType());
+        config.put("qualityQualityType", QualityQualityTypeEnum.getAllType());
         return Results.success(config);
     }
 }
