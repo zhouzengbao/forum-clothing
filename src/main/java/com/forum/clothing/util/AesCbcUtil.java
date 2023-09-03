@@ -11,6 +11,7 @@ import java.util.Base64;
  * 注：
  * AES-128-CBC可以自己定义“密钥”和“偏移量“。
  * AES-128是jdk自动生成的“密钥”。
+ * @author zb
  */
 public class AesCbcUtil {
     /**
@@ -34,7 +35,7 @@ public class AesCbcUtil {
             SecretKeySpec spec = new SecretKeySpec(keyByte, "AES");
             AlgorithmParameters parameters = AlgorithmParameters.getInstance("AES");
             parameters.init(new IvParameterSpec(ivByte));
-            cipher.init(Cipher.DECRYPT_MODE, spec, parameters);// 初始化
+            cipher.init(Cipher.DECRYPT_MODE, spec, parameters);
             byte[] resultByte = cipher.doFinal(dataByte);
             if (null != resultByte && resultByte.length > 0) {
                 return new String(resultByte, encodingFormat);

@@ -10,6 +10,9 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+/**
+ * @author zb
+ */
 @Data
 @Builder
 @AllArgsConstructor
@@ -46,7 +49,7 @@ public class AppUser {
     /**
      * 用户类型：1供货商2经销商
      */
-    @ApiModelProperty(value = "用户类型1供货商 2经销商")
+    @ApiModelProperty(value = "用户类型0原材料供货商 2分拣场 3贸易商")
     private Integer userType;
 
     /**

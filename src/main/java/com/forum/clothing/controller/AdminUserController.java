@@ -14,6 +14,7 @@ import javax.annotation.Resource;
 
 /**
  * 超管
+ * @author zb
  */
 @Api("超管")
 @RestController

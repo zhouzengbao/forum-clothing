@@ -6,7 +6,9 @@ import com.alibaba.fastjson.JSON;
 import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
-
+/**
+ * @author zb
+ */
 public class Result<T> implements Serializable {
 
 	/**
@@ -33,7 +35,7 @@ public class Result<T> implements Serializable {
 	public static int FAILURE = 1;
 
 	public Map<String, Object> map() {
-		Map<String, Object> map = new HashMap<String, Object>();
+		Map<String, Object> map = new HashMap<>(3);
 		map.put("code", code);
 		map.put("data", data);
 		map.put("msg", msg);

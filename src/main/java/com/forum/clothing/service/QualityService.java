@@ -2,23 +2,33 @@ package com.forum.clothing.service;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
-import com.baomidou.mybatisplus.core.toolkit.StringUtils;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.forum.clothing.dto.QualityDetailDto;
 import com.forum.clothing.dto.QualityPublishDto;
+import com.forum.clothing.enums.AppUserTypeEnum;
+import com.forum.clothing.enums.QualityQualityTypeEnum;
+import com.forum.clothing.enums.QualityTypeEnum;
 import com.forum.clothing.mapper.AppUserMapper;
+import com.forum.clothing.mapper.QualityCollectMapper;
 import com.forum.clothing.mapper.QualityMapper;
 import com.forum.clothing.model.AppUser;
 import com.forum.clothing.model.Quality;
+import com.forum.clothing.model.QualityCollect;
 import com.forum.clothing.util.result.PageDTO;
+import com.forum.clothing.util.result.Result;
+import com.forum.clothing.util.result.Results;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.annotation.Resource;
+import java.util.Date;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 /**
@@ -29,15 +39,17 @@ import java.util.stream.Collectors;
 @Slf4j
 public class QualityService {
 
-    @Autowired
+    @Resource
     private QualityMapper qualityMapper;
-    @Autowired
+    @Resource
     private AppUserMapper appUserMapper;
+    @Resource
+    private QualityCollectMapper qualityCollectMapper;
 
     /**
      * 保存,新增 or 更新
      */
-    @Transactional
+    @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
     public void save(QualityPublishDto qualityPublishDto) {
         log.info("save quality,request param:{}", qualityPublishDto);
         String openid = qualityPublishDto.getOpenid();
@@ -125,6 +137,14 @@ public class QualityService {
      */
     public PageDTO<QualityDetailDto> list(Integer current, Integer size, String type, Byte qualityType, Integer pageType, String openid) {
 
+        if (StringUtils.isEmpty(openid)){
+            return new PageDTO<>();
+        }
+        AppUser mainUser = appUserMapper.selectByOpenId(openid);
+        if (Objects.isNull(mainUser)){
+            return new PageDTO<>();
+        }
+
         IPage<Quality> page = new Page<>(current, size);
 
         LambdaQueryWrapper<Quality> lambdaQuery = Wrappers.lambdaQuery(Quality.class);
@@ -133,7 +153,11 @@ public class QualityService {
 
         IPage<Quality> qualityIPage = qualityMapper.selectPage(page, lambdaQuery);
         List<QualityDetailDto> collect = null;
-        if (qualityIPage.getRecords().size() > 0) {
+        if (qualityIPage.getTotal() > 0) {
+
+            List<Integer> collectQualityIdList = qualityCollectMapper.selectList(Wrappers.lambdaQuery(QualityCollect.class).eq(QualityCollect::getAppUserId, mainUser.getId())).stream().map(QualityCollect::getQualityId).collect(Collectors.toList());
+            boolean empty = collectQualityIdList.isEmpty();
+
             collect = qualityIPage.getRecords().stream().map(qp -> {
                 QualityDetailDto qualityDetailDto = new QualityDetailDto();
                 BeanUtils.copyProperties(qp, qualityDetailDto);
@@ -141,6 +165,19 @@ public class QualityService {
                 AppUser appUser = appUserMapper.selectById(qp.getAppUserId());
                 qualityDetailDto.setUserType(appUser.getUserType());
                 qualityDetailDto.setUserName(appUser.getUserName());
+
+                // 供需
+                qualityDetailDto.setQualityTypeStr(QualityQualityTypeEnum.getQualityTypeStrByCode(qp.getQualityType()));
+                //冬装夏装
+                qualityDetailDto.setTypeStr(QualityTypeEnum.getTypeStrByCode(qp.getType()));
+
+                AppUser currAppUser = appUserMapper.selectById(qp.getAppUserId());
+                //用户类型
+                qualityDetailDto.setUserTypeStr(AppUserTypeEnum.getUserTypeStr(currAppUser.getUserType()));
+                qualityDetailDto.setCollect(0);
+                if (!empty){
+                    qualityDetailDto.setCollect(collectQualityIdList.contains(qp.getId())? 1 : 0);
+                }
 
                 return qualityDetailDto;
             }).collect(Collectors.toList());
@@ -155,4 +192,14 @@ public class QualityService {
 
     }
 
+    public Result<?> collect(Integer id, Integer userId) {
+        LambdaQueryWrapper<QualityCollect> eqWrapper = Wrappers.lambdaQuery(QualityCollect.class).eq(QualityCollect::getQualityId, id).eq(QualityCollect::getAppUserId, userId);
+        QualityCollect qualityCollect = qualityCollectMapper.selectOne(eqWrapper);
+        if (Objects.isNull(qualityCollect)){
+            qualityCollectMapper.insert(QualityCollect.builder().qualityId(id).appUserId(userId).createTime(new Date()).build());
+        }else {
+            qualityCollectMapper.delete(eqWrapper);
+        }
+        return Results.success();
+    }
 }

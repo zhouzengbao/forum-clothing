@@ -2,12 +2,17 @@ package com.forum.clothing.util;
 
 import com.forum.clothing.enums.WechatDomain;
 
+/**
+ * @author zb
+ */
 public class WpApiUrl {
 
-	// 微信域名
-	private static WechatDomain domain = WechatDomain.COMMON_S;
-	private static WechatDomain https_domain = WechatDomain.COMMON_S;
-	private static WechatDomain pay_domain = WechatDomain.PAY;
+	/**
+	 * 微信域名
+	 */
+	private static final WechatDomain domain = WechatDomain.COMMON_S;
+	private static final WechatDomain https_domain = WechatDomain.COMMON_S;
+	private static final WechatDomain pay_domain = WechatDomain.PAY;
 
 	/**
 	 * 重要接口
