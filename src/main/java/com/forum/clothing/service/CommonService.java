@@ -1,14 +1,18 @@
 package com.forum.clothing.service;
 
+import com.forum.clothing.enums.AppUserTypeEnum;
 import com.forum.clothing.util.result.Result;
 import com.forum.clothing.util.result.Results;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.ibatis.annotations.Mapper;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Objects;
 import java.util.UUID;
 
@@ -33,12 +37,21 @@ public class CommonService {
 
         String fileType = originalFilename.substring(originalFilename.lastIndexOf("."));
         try {
-            file.transferTo(new File(baseFilePath + fileName + fileType));
+            File local = new File(baseFilePath + fileName + fileType);
+            if (!local.getParentFile().exists()) {
+                local.getParentFile().mkdirs();
+            }
+            file.transferTo(local);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-        return Results.success(fileName);
+        return Results.success(fileName + fileType);
     }
 
 
+    public Result<?> config() {
+        Map<String, Object> config = new HashMap<>();
+        config.put("userType", AppUserTypeEnum.getAllType());
+        return Results.success(config);
+    }
 }

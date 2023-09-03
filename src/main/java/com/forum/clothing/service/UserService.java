@@ -95,7 +95,7 @@ public class UserService {
         appUser.setIdNum(inItUserInfoDto.getIdNum());
         appUser.setTelephone(inItUserInfoDto.getTelephone());
         appUser.setUpdateTime(System.currentTimeMillis());
-        appUser.setSitePic(JSON.toJSONString(inItUserInfoDto.getSitePic()));
+        appUser.setSitePic(inItUserInfoDto.getSitePic());
         appUserMapper.updateById(appUser);
 
         return Results.success(appUser);
@@ -158,5 +158,9 @@ public class UserService {
 
     public Result<String> getUserPhoneByWechatCode(String code) {
         return Results.success(WeChatUtil.getPhone(code));
+    }
+
+    public Result<AppUser> getUserByOpenId(String openid) {
+        return Results.success(appUserMapper.selectByOpenId(openid));
     }
 }

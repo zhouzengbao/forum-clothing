@@ -34,6 +34,15 @@ public class UserController {
     /**
      * code 换取openId 并注册
      */
+    @ApiOperation(value = "获取用户信息")
+    @GetMapping("getUserByOpenId")
+    public Result<AppUser> getUserByOpenId(String openid) {
+        return userService.getUserByOpenId(openid);
+    }
+
+    /**
+     * code 换取openId 并注册
+     */
     @ApiOperation(value = "使用code换取用户手机号")
     @GetMapping("getUserPhoneByWechatCode")
     public Result<String> getUserPhoneByWechatCode(String code){
@@ -45,7 +54,7 @@ public class UserController {
      */
     @ApiOperation(value = "注册提交")
     @PostMapping("initUserInfo")
-    public Result<AppUser> initUserInfo(@RequestBody @Valid InItUserInfoDto inItUserInfoDto){
+    public Result<AppUser> initUserInfo(@Valid InItUserInfoDto inItUserInfoDto){
         return userService.initUserInfo(inItUserInfoDto);
     }
 
