@@ -11,8 +11,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import javax.servlet.http.HttpServletRequest;
-
 /**
  * 供需
  */
@@ -43,7 +41,7 @@ public class QualityController {
      */
     @ApiOperation("管理员 内容审核 暂时不用")
     @PostMapping("/examine")
-    public Result examine(Integer qualityId, Integer adminId) {
+    public Result<?> examine(Integer qualityId, Integer adminId) {
         try {
             qualityService.examine(qualityId, adminId);
         } catch (Exception e) {
@@ -57,7 +55,7 @@ public class QualityController {
      */
     @ApiOperation("管理员 内容下架 暂时不用")
     @PostMapping("/offline")
-    public Result offline(Integer qualityId, Integer appUserId) {
+    public Result<?> offline(Integer qualityId, Integer appUserId) {
         try {
             qualityService.offline(qualityId, appUserId);
         } catch (Exception e) {
@@ -71,7 +69,7 @@ public class QualityController {
      */
     @ApiOperation("管理员 内容删除 暂时不用")
     @PostMapping("/delete")
-    public Result delete(Integer qualityId, Integer appUserId) {
+    public Result<?> delete(Integer qualityId, Integer appUserId) {
         try {
             qualityService.delete(qualityId, appUserId);
         } catch (Exception e) {
@@ -80,17 +78,22 @@ public class QualityController {
         return Results.success();
     }
 
+
     /**
      * 列表
+     * @param pageType 0首页 1收藏 2我的发布
      */
     @ApiOperation("列表")
     @PostMapping("/list")
-    public Result list(Integer current,
-                       Integer size,
-                       String type,
-                       Byte qualityType) {
+    public Result<?> list(Integer current,
+                          Integer size,
+                          String type,
+                          Byte qualityType,
+                          Integer pageType,
+                          String openid
+    ) {
         try {
-            return Results.success(qualityService.list(current, size, type, qualityType));
+            return Results.success(qualityService.list(current, size, type, qualityType, pageType, openid));
         } catch (Exception e) {
             return Results.failure(e.getMessage());
         }
