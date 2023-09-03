@@ -1,6 +1,7 @@
 package com.forum.clothing.service;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.StringUtils;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
@@ -124,35 +125,32 @@ public class QualityService {
      */
     public PageDTO<QualityDetailDto> list(Integer current, Integer size, String type, Byte qualityType, Integer pageType, String openid) {
 
-        Page<Quality> page = new Page<>(current, size);
-        LambdaQueryWrapper<Quality> lambdaQuery = Wrappers.lambdaQuery(Quality.class);
-        if (StringUtils.isNotBlank(type)) {
-            lambdaQuery.eq(Quality::getType, type);
-        }
-        if(qualityType != null){
-            lambdaQuery.eq(Quality::getQualityType, qualityType);
-        }
+        IPage<Quality> page = new Page<>(current, size);
 
-        Page<Quality> qualityPage = qualityMapper.selectPage(page, lambdaQuery);
+        LambdaQueryWrapper<Quality> lambdaQuery = Wrappers.lambdaQuery(Quality.class);
+        lambdaQuery.eq(StringUtils.isNotBlank(type),Quality::getType, type);
+        lambdaQuery.eq(qualityType != null, Quality::getQualityType, qualityType);
+
+        IPage<Quality> qualityIPage = qualityMapper.selectPage(page, lambdaQuery);
         List<QualityDetailDto> collect = null;
-        if (qualityPage.getRecords().size() > 0) {
-            collect = qualityPage.getRecords().stream().map(qp -> {
+        if (qualityIPage.getRecords().size() > 0) {
+            collect = qualityIPage.getRecords().stream().map(qp -> {
                 QualityDetailDto qualityDetailDto = new QualityDetailDto();
                 BeanUtils.copyProperties(qp, qualityDetailDto);
                 // 用户信息
                 AppUser appUser = appUserMapper.selectById(qp.getAppUserId());
-                qualityDetailDto.setNickName(appUser.getNickName());
                 qualityDetailDto.setUserType(appUser.getUserType());
+                qualityDetailDto.setUserName(appUser.getUserName());
 
                 return qualityDetailDto;
             }).collect(Collectors.toList());
         }
 
         return new PageDTO<>(
-                qualityPage.getTotal(),
-                qualityPage.getPages(),
-                qualityPage.getCurrent(),
-                qualityPage.getSize(),
+                qualityIPage.getTotal(),
+                qualityIPage.getPages(),
+                qualityIPage.getCurrent(),
+                qualityIPage.getSize(),
                 collect);
 
     }
