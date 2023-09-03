@@ -12,12 +12,14 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.servlet.http.HttpServletRequest;
+
 /**
  * 供需
  */
 @Api("货品接口")
 @RestController
-@RequestMapping("/quality")
+@RequestMapping("/v1/quality")
 public class QualityController {
 
     @Autowired
@@ -28,7 +30,7 @@ public class QualityController {
      */
     @ApiOperation("发布货品")
     @PostMapping("/publish")
-    public Result publish(@RequestBody QualityPublishDto qualityPublishDto) {
+    public Result<?> publish(QualityPublishDto qualityPublishDto, HttpServletRequest request) {
         try {
             qualityService.save(qualityPublishDto);
         } catch (Exception e) {

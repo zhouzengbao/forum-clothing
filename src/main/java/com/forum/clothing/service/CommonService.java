@@ -1,6 +1,7 @@
 package com.forum.clothing.service;
 
 import com.forum.clothing.enums.AppUserTypeEnum;
+import com.forum.clothing.enums.QualityTypeEnum;
 import com.forum.clothing.util.result.Result;
 import com.forum.clothing.util.result.Results;
 import org.apache.commons.lang3.StringUtils;
@@ -52,6 +53,7 @@ public class CommonService {
     public Result<?> config() {
         Map<String, Object> config = new HashMap<>();
         config.put("userType", AppUserTypeEnum.getAllType());
+        config.put("qualityType", QualityTypeEnum.getAllType());
         return Results.success(config);
     }
 }
