@@ -21,8 +21,8 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 /**
- * @Author zhengqiang.shi
- * @Date 2023/8/26 13:38
+ * @author zhengqiang.shi
+ * 2023/8/26 13:38
  */
 @Service
 @Slf4j
@@ -118,8 +118,11 @@ public class QualityService {
 
     /**
      * 列表
+     * todo 新增接口参数 未实现
+     *      pageType 0首页 1收藏 2我的发布
+     *      openid 查询用户身份
      */
-    public PageDTO<QualityDetailDto> list(Integer current, Integer size, String type, Byte qualityType) {
+    public PageDTO<QualityDetailDto> list(Integer current, Integer size, String type, Byte qualityType, Integer pageType, String openid) {
 
         Page<Quality> page = new Page<>(current, size);
         LambdaQueryWrapper<Quality> lambdaQuery = Wrappers.lambdaQuery(Quality.class);
