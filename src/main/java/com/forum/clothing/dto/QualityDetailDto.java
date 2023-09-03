@@ -11,4 +11,6 @@ import lombok.Data;
 public class QualityDetailDto extends Quality{
 
     private String nickName;
+
+    private Integer userType;
 }

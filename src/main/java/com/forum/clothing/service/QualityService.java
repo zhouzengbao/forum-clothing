@@ -39,16 +39,16 @@ public class QualityService {
     @Transactional
     public void save(QualityPublishDto qualityPublishDto) {
         log.info("save quality,request param:{}", qualityPublishDto);
-        Integer appUserId = qualityPublishDto.getAppUserId();
-        AppUser appUser = appUserMapper.selectById(appUserId);
+        String openid = qualityPublishDto.getOpenid();
+        AppUser appUser = appUserMapper.selectByOpenId(openid);
         if (appUser == null || appUser.getAuth() == 0) {
             throw new IllegalArgumentException("用户不存在或未审核");
         }
-
         Quality quality = new Quality();
         BeanUtils.copyProperties(qualityPublishDto, quality);
         quality.setQualityType(appUser.getUserType().byteValue());
         quality.setStatus((byte) 0);
+        quality.setAppUserId(appUser.getId());
         int result;
         if (quality.getId() != null && quality.getId() != 0) {
             // 下线才能更新
@@ -139,6 +139,7 @@ public class QualityService {
                 // 用户信息
                 AppUser appUser = appUserMapper.selectById(qp.getAppUserId());
                 qualityDetailDto.setNickName(appUser.getNickName());
+                qualityDetailDto.setUserType(appUser.getUserType());
 
                 return qualityDetailDto;
             }).collect(Collectors.toList());

@@ -18,7 +18,7 @@ public class QualityPublishDto {
      * 用户ID
      */
     @ApiModelProperty("用户ID")
-    private Integer appUserId;
+    private String openid;
 
     /**
      * 内容ID

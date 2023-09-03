@@ -21,8 +21,12 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Objects;
 
 @Service
@@ -89,6 +93,10 @@ public class UserService {
         if (Objects.isNull(appUser)){
             return Results.failure("用户不存在!");
         }
+
+        if (!isValidID(inItUserInfoDto.getIdNum())){
+            return Results.failure("身份证无效");
+        }
         appUser.setUserName(inItUserInfoDto.getUserName());
         appUser.setInviteUserId(inItUserInfoDto.getInviteCode());
         appUser.setUserType(inItUserInfoDto.getUserType());
@@ -99,6 +107,38 @@ public class UserService {
         appUserMapper.updateById(appUser);
 
         return Results.success(appUser);
+    }
+
+    public static boolean isValidID(String id) {
+        //身份证号码的正则表达式
+        String pattern = "^\\d{17}(\\d|x|X)$";
+        if (!id.matches(pattern)) {
+            return false;
+        }
+        //省份代码
+        String[] provinceCodes = {"11", "12", "13", "14", "15", "21", "22", "23", "31", "32", "33", "34", "35", "36", "37", "41", "42", "43", "44", "45", "46", "50", "51", "52", "53", "54", "61", "62", "63", "64", "65", "71", "81", "82", "91"};
+        List<String> provinceList = Arrays.asList(provinceCodes);
+        if (!provinceList.contains(id.substring(0, 2))) {
+            return false;
+        }
+        //生日校验
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMdd");
+        dateFormat.setLenient(false);
+        try {
+            dateFormat.parse(id.substring(6, 14));
+        } catch (ParseException e) {
+            return false;
+        }
+        //校验码验证
+        int[] weights = {7, 9, 10, 5, 8, 4, 2, 1, 6, 3, 7, 9, 10, 5, 8, 4, 2, 1};
+        int sum = 0;
+        for (int i = 0; i < weights.length; i++) {
+            sum += weights[i] * Integer.parseInt(id.substring(i, i + 1));
+        }
+        int mod = sum % 11;
+        String[] checkCodes = {"1", "0", "x", "9", "8", "7", "6", "5", "4", "3", "2"};
+        String checkCode = checkCodes[mod];
+        return checkCode.equalsIgnoreCase(id.substring(17));
     }
 
     public Result<AppUser> getUserInfo(String openId) {
