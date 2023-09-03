@@ -11,6 +11,7 @@ import javax.annotation.Resource;
 
 @Api(value = "公共类")
 @RestController
+@RequestMapping("v1/common")
 public class CommonController {
 
     @Resource
@@ -24,6 +25,16 @@ public class CommonController {
     public @ResponseBody
     Result<String> uploadImage(@RequestParam(value = "file", required = false) MultipartFile file) {
         return commonService.uploadFile(file);
+    }
+
+    /**
+     * 上传图片
+     */
+    @ApiOperation("上传图片， 返回图片名称，保存时提交名称即可.")
+    @RequestMapping(value = "/config", method = { RequestMethod.GET})
+    public @ResponseBody
+    Result<?> config() {
+        return commonService.config();
     }
 
 

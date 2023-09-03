@@ -8,6 +8,7 @@ import com.forum.clothing.dto.WechatLoginDto;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
@@ -62,12 +63,11 @@ public class WeChatUtil {
             SystemConfig.accessToken = getAccessToken(SystemConfig.appId, SystemConfig.secret);
         }
 
-        String url = Invoke.get(WpApiUrl.Core.USER_PHONE.url(), SystemConfig.accessToken);
-
+        log.info("获取手机号 当前access token {}",  SystemConfig.accessToken);
         Map<String, String> body = new HashMap<>(1);
         body.put("code", code);
-        String post = Invoke.post(url, JSON.toJSONString(body));
-
+        String post = Invoke.post(WpApiUrl.Core.USER_PHONE.url(), JSON.toJSONString(body), SystemConfig.accessToken);
+        log.info("获取手机号 当前access url {}",  post);
         ResultHandler phoneBody = ResultHandler.create(post);
         if (phoneBody.isSuccess()) {
             return phoneBody.getJSONObject("phone_info").getString("phoneNumber");

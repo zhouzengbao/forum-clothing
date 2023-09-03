@@ -26,7 +26,7 @@ public class WpApiUrl {
 		 * 获取手机号
 		 * post  {"code":""}
 		 */
-		USER_PHONE("/wxa/business/getuserphonenumber?access_token=={}"),
+		USER_PHONE("/wxa/business/getuserphonenumber?access_token={0}"),
 
 
 		;

@@ -51,9 +51,8 @@ public class InItUserInfoDto {
     /**
      * 图片
      */
-    @Size(min = 3, max = 3, message = "请上传3张认证图片")
     @ApiModelProperty(value = "认证图片")
-    private List<String> sitePic;
+    private String sitePic;
 
     @ApiModelProperty(value = "用户ID，使用code换取的用户信息中的ID")
     @NotNull(message = "参数错误!")
