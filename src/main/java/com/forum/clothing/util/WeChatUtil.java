@@ -3,15 +3,12 @@ package com.forum.clothing.util;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.forum.clothing.config.SystemConfig;
-import com.forum.clothing.dto.WeChatDto;
 import com.forum.clothing.dto.WechatLoginDto;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 
-import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Optional;
 
 @Slf4j
 public class WeChatUtil {
@@ -22,19 +19,6 @@ public class WeChatUtil {
         JSONObject jsonObject = JSON.parseObject(accessTokenResult);
         return jsonObject.getString("access_token");
     }
-
-    public static String getOpenId(String code, String appId, String appSecret) {
-        // 根据code获取 access_token
-        String accessTokenResult = Invoke.get(WpApiUrl.Web.LOGIN.url(), appId, appSecret, code);
-        log.info("获取 openId 返回结果 -> {}", accessTokenResult);
-        ResultHandler accessTokenResultHandler = ResultHandler.create(accessTokenResult);
-        if (accessTokenResultHandler.isSuccess()) {
-            return Optional.ofNullable(accessTokenResultHandler.get("openid")).map(String::valueOf).orElse(null);
-        }
-        throw new RuntimeException("获取openId授权异常");
-    }
-
-
     public static WechatLoginDto login(String code, String appId, String appSecret) {
         // 根据code获取 access_token
         String accessTokenResult = Invoke.get(WpApiUrl.Web.LOGIN.url(), appId, appSecret, code);
@@ -42,17 +26,6 @@ public class WeChatUtil {
         ResultHandler accessTokenResultHandler = ResultHandler.create(accessTokenResult);
         if (accessTokenResultHandler.isSuccess()) {
             return JSON.parseObject(accessTokenResult, WechatLoginDto.class);
-        }
-        throw new RuntimeException("获取openId授权异常");
-    }
-
-    public static WeChatDto getWechatDto(String code, String appId, String appSecret) {
-        // 根据code获取 access_token
-        String accessTokenResult = Invoke.get(WpApiUrl.Web.Web_Access_Token.url(), appId, appSecret, code);
-        log.info("获取 openId 返回结果 -> {}", accessTokenResult);
-        ResultHandler accessTokenResultHandler = ResultHandler.create(accessTokenResult);
-        if (accessTokenResultHandler.isSuccess()) {
-            return accessTokenResultHandler.getDto();
         }
         throw new RuntimeException("获取openId授权异常");
     }

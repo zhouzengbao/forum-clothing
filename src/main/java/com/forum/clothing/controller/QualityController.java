@@ -9,6 +9,7 @@ import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
@@ -85,8 +86,8 @@ public class QualityController {
      */
     @ApiOperation("列表")
     @PostMapping("/list")
-    public Result<?> list(Integer current,
-                          Integer size,
+    public Result<?> list(@RequestParam(defaultValue = "0") Integer current,
+                          @RequestParam(defaultValue = "10") Integer size,
                           String type,
                           Byte qualityType,
                           Integer pageType,

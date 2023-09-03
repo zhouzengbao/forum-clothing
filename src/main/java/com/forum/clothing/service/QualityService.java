@@ -135,7 +135,7 @@ public class QualityService {
 
         Page<Quality> qualityPage = qualityMapper.selectPage(page, lambdaQuery);
         List<QualityDetailDto> collect = null;
-        if (qualityPage.getTotal() > 0) {
+        if (qualityPage.getRecords().size() > 0) {
             collect = qualityPage.getRecords().stream().map(qp -> {
                 QualityDetailDto qualityDetailDto = new QualityDetailDto();
                 BeanUtils.copyProperties(qp, qualityDetailDto);
