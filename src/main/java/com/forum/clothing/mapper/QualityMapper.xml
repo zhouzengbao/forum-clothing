@@ -4,6 +4,7 @@
   <resultMap id="BaseResultMap" type="com.forum.clothing.model.Quality">
     <id column="id" jdbcType="INTEGER" property="id" />
     <result column="app_user_id" jdbcType="INTEGER" property="appUserId" />
+    <result column="app_user_type" jdbcType="INTEGER" property="appUserType" />
     <result column="type" jdbcType="VARCHAR" property="type" />
     <result column="demand" jdbcType="DECIMAL" property="demand" />
     <result column="quality_per" jdbcType="DECIMAL" property="qualityPer" />
