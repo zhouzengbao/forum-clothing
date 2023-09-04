@@ -30,6 +30,11 @@ public class Quality {
     private Integer appUserId;
 
     /**
+     * 发布用户类型
+     */
+    private Integer appUserType;
+
+    /**
      * 类别：0 夏装 1 冬装
      */
     private String type;

@@ -62,6 +62,7 @@ public class QualityService {
         quality.setQualityType(appUser.getUserType().byteValue());
         quality.setStatus((byte) 0);
         quality.setAppUserId(appUser.getId());
+        quality.setAppUserType(appUser.getUserType());
         int result;
         if (quality.getId() != null && quality.getId() != 0) {
             // 下线才能更新
@@ -132,23 +133,50 @@ public class QualityService {
     /**
      * 列表
      * todo 新增接口参数 未实现
-     *      pageType 0首页 1收藏 2我的发布
      *      openid 查询用户身份
      */
     public PageDTO<QualityDetailDto> list(Integer current, Integer size, String type, Byte qualityType, Integer pageType, String openid) {
 
-        if (StringUtils.isEmpty(openid)){
+        if (StringUtils.isEmpty(openid)) {
             return new PageDTO<>();
         }
         AppUser mainUser = appUserMapper.selectByOpenId(openid);
-        if (Objects.isNull(mainUser)){
+        if (Objects.isNull(mainUser)) {
             return new PageDTO<>();
         }
 
         IPage<Quality> page = new Page<>(current, size);
-
         LambdaQueryWrapper<Quality> lambdaQuery = Wrappers.lambdaQuery(Quality.class);
-        lambdaQuery.eq(StringUtils.isNotBlank(type),Quality::getType, type);
+
+        switch (pageType) {
+            case 0:
+                // 首页
+                AppUserTypeEnum userTypeEnum = AppUserTypeEnum.getByType(mainUser.getUserType());
+                switch (Objects.requireNonNull(userTypeEnum)) {
+                    case SUPPLIER:
+                        // 原材料供应商和分拣场
+                        lambdaQuery.in(Quality::getAppUserType, AppUserTypeEnum.SUPPLIER.getUserType(), AppUserTypeEnum.YARD.getUserType());
+                    case YARD:
+                        // 不限制
+                        break;
+                    case MERCHANT:
+                        // 贸易商和分拣场
+                        lambdaQuery.in(Quality::getAppUserType, AppUserTypeEnum.MERCHANT.getUserType(), AppUserTypeEnum.YARD.getUserType());
+                        break;
+                }
+                break;
+            case 1:
+                // 我的收藏
+                List<Integer> collectQualityIdList = qualityCollectMapper.selectList(Wrappers.lambdaQuery(QualityCollect.class).eq(QualityCollect::getAppUserId, mainUser.getId())).stream().map(QualityCollect::getQualityId).collect(Collectors.toList());
+                lambdaQuery.in(Quality::getId, collectQualityIdList);
+                break;
+            case 2:
+                // 我的发布
+                lambdaQuery.eq(Quality::getAppUserId, mainUser.getId());
+                break;
+        }
+
+        lambdaQuery.eq(StringUtils.isNotBlank(type), Quality::getType, type);
         lambdaQuery.eq(qualityType != null, Quality::getQualityType, qualityType);
 
         IPage<Quality> qualityIPage = qualityMapper.selectPage(page, lambdaQuery);
@@ -175,8 +203,8 @@ public class QualityService {
                 //用户类型
                 qualityDetailDto.setUserTypeStr(AppUserTypeEnum.getUserTypeStr(currAppUser.getUserType()));
                 qualityDetailDto.setCollect(0);
-                if (!empty){
-                    qualityDetailDto.setCollect(collectQualityIdList.contains(qp.getId())? 1 : 0);
+                if (!empty) {
+                    qualityDetailDto.setCollect(collectQualityIdList.contains(qp.getId()) ? 1 : 0);
                 }
 
                 return qualityDetailDto;
@@ -195,9 +223,9 @@ public class QualityService {
     public Result<?> collect(Integer id, Integer userId) {
         LambdaQueryWrapper<QualityCollect> eqWrapper = Wrappers.lambdaQuery(QualityCollect.class).eq(QualityCollect::getQualityId, id).eq(QualityCollect::getAppUserId, userId);
         QualityCollect qualityCollect = qualityCollectMapper.selectOne(eqWrapper);
-        if (Objects.isNull(qualityCollect)){
+        if (Objects.isNull(qualityCollect)) {
             qualityCollectMapper.insert(QualityCollect.builder().qualityId(id).appUserId(userId).createTime(new Date()).build());
-        }else {
+        } else {
             qualityCollectMapper.delete(eqWrapper);
         }
         return Results.success();

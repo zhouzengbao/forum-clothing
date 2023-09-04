@@ -6,6 +6,7 @@ import com.forum.clothing.util.result.Result;
 import com.forum.clothing.util.result.Results;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 /**
  * 供需
+ *
  * @author zb
  */
 @Api("货品接口")
@@ -83,16 +85,17 @@ public class QualityController {
 
     /**
      * 列表
+     *
      * @param pageType 0首页 1收藏 2我的发布
      */
     @ApiOperation("列表")
     @PostMapping("/list")
-    public Result<?> list(@RequestParam(defaultValue = "0") Integer page,
-                          @RequestParam(defaultValue = "10") Integer size,
-                          String type,
-                          Byte qualityType,
-                          Integer pageType,
-                          String openid
+    public Result<?> list(@RequestParam(defaultValue = "0") @ApiParam("页码") Integer page,
+                          @RequestParam(defaultValue = "10") @ApiParam("每页显示条数") Integer size,
+                          @RequestParam(required = false) @ApiParam("类别：0 夏装 1 冬装") String type,
+                          @RequestParam(required = false) @ApiParam("供需关系 0 供货 1需求") Byte qualityType,
+                          @RequestParam(defaultValue = "0") @ApiParam("0首页 1收藏 2我的发布") Integer pageType,
+                          @RequestParam @ApiParam("openid") String openid
     ) {
         try {
             return Results.success(qualityService.list(page, size, type, qualityType, pageType, openid));
@@ -103,12 +106,13 @@ public class QualityController {
 
     /**
      * 收藏
+     *
      * @param id
      * @param userId
      * @return
      */
     @PostMapping("/collect")
-    public Result<?> collect(Integer id, Integer userId){
+    public Result<?> collect(Integer id, Integer userId) {
         return qualityService.collect(id, userId);
     }
 
