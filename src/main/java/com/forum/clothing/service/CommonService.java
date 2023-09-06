@@ -61,6 +61,7 @@ public class CommonService {
         config.put("userType", AppUserTypeEnum.getAllType());
         config.put("qualityType", QualityTypeEnum.getAllType());
         config.put("qualityQualityType", QualityQualityTypeEnum.getAllType());
+        config.put("managerTelephone", "18515894141");
         return Results.success(config);
     }
 }
