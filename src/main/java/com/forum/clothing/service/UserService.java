@@ -52,8 +52,10 @@ public class UserService {
         AppUser appUser = appUserMapper.selectByOpenId(openid);
         if (Objects.isNull(appUser)){
 
-            String userInfoBody = AesCbcUtil.decrypt(encryptedData, sessionKey, iv, "UTF-8");
-            JSONObject jsonObject = JSON.parseObject(userInfoBody);
+//            String userInfoBody = AesCbcUtil.decrypt(encryptedData, sessionKey, iv, "UTF-8");
+//            JSONObject jsonObject = JSON.parseObject(userInfoBody);
+
+            long currentTimeMillis = System.currentTimeMillis();
 
             appUser = AppUser.builder()
                     .inviteUserId(StringUtils.EMPTY)
@@ -65,13 +67,15 @@ public class UserService {
                     .openId(openid)
                     .sessionKey(sessionKey)
                     .auth(0)
-                    .nickName(jsonObject.getString("nickName"))
+//                    .nickName(jsonObject.getString("nickName"))
+                    .nickName(StringUtils.EMPTY)
                     .expireTime(0L)
                     .sitePic(StringUtils.EMPTY)
-                    .avatarUrl(jsonObject.getString("avatarUrl"))
+//                    .avatarUrl(jsonObject.getString("avatarUrl"))
+                    .avatarUrl(StringUtils.EMPTY)
                     .telephone(StringUtils.EMPTY)
-                    .createTime(System.currentTimeMillis())
-                    .updateTime(System.currentTimeMillis())
+                    .createTime(currentTimeMillis)
+                    .updateTime(currentTimeMillis)
                     .build();
             appUserMapper.insert(appUser);
 
@@ -98,12 +102,13 @@ public class UserService {
             return Results.failure("用户不存在!");
         }
 
-        if (!isValidId(inItUserInfoDto.getIdNum())){
-            return Results.failure("身份证无效");
-        }
+//        if (!isValidId(inItUserInfoDto.getIdNum())){
+//            return Results.failure("身份证无效");
+//        }
         appUser.setUserName(inItUserInfoDto.getUserName());
         appUser.setInviteUserId(inItUserInfoDto.getInviteCode());
         appUser.setUserType(inItUserInfoDto.getUserType());
+        appUser.setAuth(1);
         appUser.setIdNum(inItUserInfoDto.getIdNum());
         appUser.setTelephone(inItUserInfoDto.getTelephone());
         appUser.setUpdateTime(System.currentTimeMillis());

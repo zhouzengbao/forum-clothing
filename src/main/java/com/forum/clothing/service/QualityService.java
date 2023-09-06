@@ -1,5 +1,7 @@
 package com.forum.clothing.service;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
@@ -57,6 +59,15 @@ public class QualityService {
         if (appUser == null || appUser.getAuth() == 0) {
             throw new IllegalArgumentException("用户不存在或未审核");
         }
+        String qualityPer = qualityPublishDto.getQualityPer();
+        JSONObject jsonObject = JSON.parseObject(qualityPer);
+        Long a = jsonObject.getLong("a");
+        Long b = jsonObject.getLong("b");
+        Long c = jsonObject.getLong("c");
+        if (a + b + c != 100L){
+            throw new RuntimeException("综合指标必须是100%");
+        }
+
         Quality quality = new Quality();
         BeanUtils.copyProperties(qualityPublishDto, quality);
         quality.setQualityType(appUser.getUserType().byteValue());
@@ -178,7 +189,7 @@ public class QualityService {
 
         lambdaQuery.eq(StringUtils.isNotBlank(type), Quality::getType, type);
         lambdaQuery.eq(qualityType != null, Quality::getQualityType, qualityType);
-
+        lambdaQuery.orderByDesc(Quality::getId);
         IPage<Quality> qualityIPage = qualityMapper.selectPage(page, lambdaQuery);
         List<QualityDetailDto> collect = null;
         if (qualityIPage.getTotal() > 0) {
