@@ -15,8 +15,10 @@ import java.util.stream.Collectors;
 @AllArgsConstructor
 public enum QualityTypeEnum {
 
-    SUMMER("0","夏装"),
-    WINTER("1","冬装"),
+    SUMMER("0","夏衣"),
+    WINTER("1","冬衣"),
+    SHOE("2","鞋子"),
+    BAG("3","包包"),
     ;
 
     private final String qualityType;
