@@ -1,0 +1,34 @@
+.yh_container{
+	max-width: 750px;
+	margin: 0 auto;
+}
+.yh_width{
+		width: 700upx;
+		margin: 0 25upx;
+}
+.yh_width_full{
+	width: 750upx;
+	margin:0upx;
+}
+.yh_shadow{
+	box-shadow: 0 1px 6px 2px rgba(0,0,0,.1);
+}
+.yh_solid_bottom{
+	border-bottom: .5px dashed  rgba(0,0,0,.1);
+}
+.yh_radius{
+	border-radius: 10upx;
+}
+.yh_jiaobiao{
+	width: 50px;
+	height: 50px;
+	border-radius: 500px;
+	box-shadow: 0 1px 6px 2px rgba(0,0,0,.1);
+	position: fixed;
+	right: 20upx;
+	bottom:20upx;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	z-index: 999;
+}

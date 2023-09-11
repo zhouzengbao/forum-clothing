@@ -1,0 +1,89 @@
+{
+	"pages": [
+		{
+			"path": "pages/index/index",
+			"style": {
+				"navigationBarTitleText": "首页",
+				"navigationBarBackgroundColor":"#ffffff",
+				"navigationBarTextStyle":"black",
+				"enablePullDownRefresh":false,
+				"app-plus":{
+					"titleNView":true    //是否显示当前页的顶部导航栏
+				}
+			}
+		},
+		{
+			"path": "pages/my/index",
+			"style": {
+				"navigationBarTitleText": "个人中心",
+				"navigationBarBackgroundColor":"#FFFFFF",
+				"navigationBarTextStyle":"black",
+				"enablePullDownRefresh":true,
+				"app-plus":{
+					"titleNView":true    //是否显示当前页的顶部导航栏
+				}
+			}
+		},
+		{
+			"path": "pages/register/index",
+			"style": {
+				"navigationBarTitleText": "注册",
+				"navigationBarBackgroundColor":"#ffffff",
+				"navigationBarTextStyle":"black",
+				"enablePullDownRefresh":false,
+				"app-plus":{
+					"titleNView":false    //是否显示当前页的顶部导航栏
+				}
+			}
+		},
+		{
+			"path": "pages/login/index",
+			"style": {
+				"navigationBarTitleText": "登录",
+				"navigationBarBackgroundColor":"#ffffff",
+				"navigationBarTextStyle":"black",
+				"enablePullDownRefresh":false,
+				"app-plus":{
+					"titleNView":false    //是否显示当前页的顶部导航栏
+				}
+			}
+		}
+    ],
+	"globalStyle": {
+		"navigationBarTextStyle": "black",
+		"navigationBarTitleText": "uni-app",
+		"navigationBarBackgroundColor": "#F8F8F8",
+		"backgroundColor": "#F8F8F8"
+	},
+	"tabBar": {
+		"color": "#C0C4CC",
+		"selectedColor": "#f37b1d",
+		"borderStyle": "black",
+		"backgroundColor": "#333333",
+		"fontSize":"12px",
+		"list": [
+			{
+				"pagePath": "pages/index/index",
+				"iconPath": "static/homes.png",
+				"selectedIconPath": "static/homes_sel.png",
+				"text": "首页"
+			},
+			{
+				"pagePath": "pages/my/index",
+				"iconPath": "static/users.png",
+				"selectedIconPath": "static/users_sel.png",
+				"text": "我的"
+			}
+		]
+	},
+	"condition" : { //模式配置，仅开发期间生效
+		"current": 0, //当前激活的模式(list 的索引项)
+		"list": [
+			{
+				"name": "app", //模式名称
+				"path": "pages/index/index", //启动页面，必选
+				"query": "" //启动参数，在页面的onLoad函数里面得到
+			}
+		]
+	}
+}
